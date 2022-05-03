@@ -13,7 +13,7 @@ class Game {
 
     var formattedTime by mutableStateOf("00:00")
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
-    private var isActive = false
+    var isActive = false
     private var timeMillis = 0L
     private var lastTimestamp = 0L
 

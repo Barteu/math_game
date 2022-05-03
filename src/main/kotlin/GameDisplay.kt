@@ -31,12 +31,11 @@ fun GameDisplay(
     onStartClick: () -> Unit,
     onResetClick: () -> Unit,
     question: String,
-    onSubmitClick: (String) -> Unit
+    onSubmitClick: (String) -> Unit,
+    isActive: Boolean
 ){
 
     val focusManager = LocalFocusManager.current
-
-
             var answer by remember { mutableStateOf("") }
             var isError by remember { mutableStateOf(false) }
 
@@ -47,7 +46,6 @@ fun GameDisplay(
                     false
                 }
             }
-
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
@@ -90,26 +88,29 @@ fun GameDisplay(
                         if (isError)
                             Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colors.error)
                     },
+                    enabled = isActive
                 )
                 Spacer(Modifier.width(16.dp))
                 Button(onClick = {onSubmitClick(answer)},
                 enabled = !isError && answer.isNotEmpty()) {
                     Text("Submit")
                 }
-
             }
-
             Spacer(Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Button(onStartClick) {
+                Button(
+                    onClick=onStartClick,
+                    enabled = !isActive) {
                     Text("Start")
                 }
                 Spacer(Modifier.width(16.dp))
-                Button(onResetClick) {
+                Button(
+                    onClick=onResetClick,
+                    enabled = isActive) {
                     Text("Reset")
                 }
             }
