@@ -9,13 +9,13 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class Game {
-
+class Game(val resultsManager: ResultsManager) {
     var formattedTime by mutableStateOf("00:00")
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     var isActive = false
     private var timeMillis = 0L
     private var lastTimestamp = 0L
+    private var points = 0
 
     var question by mutableStateOf("2+2")
     var answer by mutableStateOf("2+2")
@@ -45,21 +45,9 @@ class Game {
         lastTimestamp = 0L
         formattedTime = "00:00"
         isActive = false
+        points = 0
     }
 
-
-    private fun formatTime(timeMillis: Long): String{
-        val localDateTime = LocalDateTime.ofInstant(
-            Instant.ofEpochMilli(timeMillis),
-            ZoneId.systemDefault()
-        )
-
-        val formatter = DateTimeFormatter.ofPattern(
-            "mm:ss",
-            Locale.getDefault()
-        )
-        return localDateTime.format(formatter)
-    }
 
 
     // TODO: complete submit fun
@@ -67,14 +55,27 @@ class Game {
         answer = submittedAnswer
 
         if (true){
+            points += 1
             question = "3+3"
         }
         else{
-
+            resultsManager.results.add(Result(playerName = "", points = points, time = timeMillis))
+            reset()
         }
 
 
     }
 
+}
+fun formatTime(timeMillis: Long): String{
+    val localDateTime = LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(timeMillis),
+        ZoneId.systemDefault()
+    )
 
+    val formatter = DateTimeFormatter.ofPattern(
+        "mm:ss",
+        Locale.getDefault()
+    )
+    return localDateTime.format(formatter)
 }

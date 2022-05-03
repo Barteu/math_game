@@ -11,10 +11,6 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.google.gson.Gson
-import java.io.FileReader
-import java.io.FileWriter
-import java.io.PrintWriter
 
 @Composable
 @Preview
@@ -26,7 +22,9 @@ fun App() {
             modifier = Modifier.fillMaxSize()
         ){
 
-            val game = remember { Game() }
+            val resultsManager = remember { ResultsManager() }
+            resultsManager.getAllResults()
+            val game = remember { Game(resultsManager) }
             Row()
             {
                 Column(
@@ -48,7 +46,7 @@ fun App() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    ResultsDisplay()
+                    ResultsDisplay(resultsManager)
                 }
             }
         }

@@ -2,10 +2,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,7 +27,22 @@ import androidx.compose.runtime.setValue
 
 @Composable
 fun ResultsDisplay(
-
+    resultsManager: ResultsManager
 ){
-    Text("YOLO TABLE")
+    Column(
+        ) {
+        resultsManager.results.forEach { result: Result ->
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Player: ${result.playerName}  Points: ${result.points}  Time: ${formatTime(result.time)}",
+                    fontSize = 18.sp,
+                    color = Color.Black
+                )
+            }
+            Spacer(Modifier.width(16.dp))
+        }
+    }
+    Spacer(Modifier.width(16.dp))
 }

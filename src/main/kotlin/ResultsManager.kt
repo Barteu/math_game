@@ -2,10 +2,13 @@ import com.google.gson.Gson
 import java.io.FileReader
 import java.io.FileWriter
 import java.io.PrintWriter
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class ResultsManager {
 
     private val path = "src/json/results.json"
+    var results = MutableList<Result>(0){Result()}
 
     fun getAllResults(): MutableList<Result>{
         try{
@@ -14,6 +17,7 @@ class ResultsManager {
             results.forEach{
                 println(it)
             }
+            this.results = results
             return results
         }
         catch(e: Exception) {
