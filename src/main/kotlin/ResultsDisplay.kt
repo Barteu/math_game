@@ -1,5 +1,8 @@
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -29,20 +32,73 @@ import androidx.compose.runtime.setValue
 fun ResultsDisplay(
     resultsManager: ResultsManager
 ){
-    Column(
+    LazyColumn(Modifier.fillMaxSize().padding(16.dp)
         ) {
-        resultsManager.results.forEach { result: Result ->
+        item {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().background(Color.LightGray)
             ) {
                 Text(
-                    text = "Player: ${result.playerName}  Points: ${result.points}  Time: ${formatTime(result.time)}",
+                    text = "Player",
                     fontSize = 18.sp,
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier
+                        .border(1.dp, Color.Black)
+                        .weight(.4f)
+                        .padding(8.dp)
+                )
+                Text(
+                    text = "Points",
+                    fontSize = 18.sp,
+                    color = Color.Black,
+                    modifier = Modifier
+                        .border(1.dp, Color.Black)
+                        .weight(.3f)
+                        .padding(8.dp)
+                )
+                Text(
+                    text = "Time",
+                    fontSize = 18.sp,
+                    color = Color.Black,
+                    modifier = Modifier
+                        .border(1.dp, Color.Black)
+                        .weight(.3f)
+                        .padding(8.dp)
                 )
             }
-            Spacer(Modifier.width(16.dp))
+        }
+        items(resultsManager.results.toTypedArray()) { result ->
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "${result.playerName}",
+                        fontSize = 18.sp,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .border(1.dp, Color.Black)
+                            .weight(.4f)
+                            .padding(8.dp)
+                    )
+                    Text(
+                        text = "${result.points}",
+                        fontSize = 18.sp,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .border(1.dp, Color.Black)
+                            .weight(.3f)
+                            .padding(8.dp)
+                    )
+                    Text(
+                        text = "${formatTime(result.time)}",
+                        fontSize = 18.sp,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .border(1.dp, Color.Black)
+                            .weight(.3f)
+                            .padding(8.dp)
+                    )
+                }
         }
     }
-    Spacer(Modifier.width(16.dp))
 }
