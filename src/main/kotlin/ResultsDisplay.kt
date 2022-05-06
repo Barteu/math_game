@@ -3,6 +3,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -27,10 +28,16 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.skia.FontWeight
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import org.jetbrains.skia.impl.Log
 
 @Composable
 fun ResultsDisplay(
-    resultsManager: ResultsManager
+    results: MutableList<Result>,
+    sortResults: (Int, Boolean) -> Unit,
+    playerText: String,
+    pointsText: String
 ){
     LazyColumn(Modifier.fillMaxSize().padding(16.dp)
         ) {
@@ -38,41 +45,55 @@ fun ResultsDisplay(
             Row(
                 modifier = Modifier.fillMaxWidth().background(Color.LightGray)
             ) {
-                Text(
-                    text = "Player",
-                    fontSize = 18.sp,
-                    color = Color.Black,
+                ClickableText(
                     modifier = Modifier
                         .border(1.dp, Color.Black)
                         .weight(.4f)
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    text = AnnotatedString(
+                        playerText,
+                        SpanStyle(
+                            fontSize = 18.sp,
+                            color = Color.Black
+                        )
+                    ),
+                    onClick = {
+                        sortResults(0, true)
+                    }
                 )
-                Text(
-                    text = "Points",
-                    fontSize = 18.sp,
-                    color = Color.Black,
+                ClickableText(
                     modifier = Modifier
                         .border(1.dp, Color.Black)
                         .weight(.3f)
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    text = AnnotatedString(
+                        pointsText,
+                        SpanStyle(
+                            fontSize = 18.sp,
+                            color = Color.Black
+                        )
+                    ),
+                    onClick = {
+                        sortResults(1, true)
+                    }
                 )
                 Text(
+                    modifier = Modifier
+                        .border(1.dp, Color.Black)
+                        .weight(.3f)
+                        .padding(8.dp),
                     text = "Time",
                     fontSize = 18.sp,
-                    color = Color.Black,
-                    modifier = Modifier
-                        .border(1.dp, Color.Black)
-                        .weight(.3f)
-                        .padding(8.dp)
+                    color = Color.Black
                 )
             }
         }
-        items(resultsManager.results.toTypedArray()) { result ->
+        items(results) { result ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${result.playerName}",
+                        text = result.playerName,
                         fontSize = 18.sp,
                         color = Color.Black,
                         modifier = Modifier
@@ -90,7 +111,7 @@ fun ResultsDisplay(
                             .padding(8.dp)
                     )
                     Text(
-                        text = "${formatTime(result.time)}",
+                        text = formatTime(result.time),
                         fontSize = 18.sp,
                         color = Color.Black,
                         modifier = Modifier

@@ -59,7 +59,7 @@ class Game(val resultsManager: ResultsManager) {
             question = "3+3"
         }
         else{
-            resultsManager.results.add(Result(playerName = "", points = points, time = timeMillis))
+            resultsManager.addResult(Result(playerName = "", points = points, time = timeMillis))
             reset()
         }
 

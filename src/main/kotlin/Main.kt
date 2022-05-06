@@ -22,8 +22,11 @@ fun App() {
             modifier = Modifier.fillMaxSize()
         ){
 
-            val resultsManager = remember { ResultsManager() }
-            resultsManager.getAllResults()
+            val resultsManager = remember {
+                val tmp = ResultsManager()
+                tmp.getAllResults()
+                tmp
+            }
             val game = remember { Game(resultsManager) }
             Row()
             {
@@ -46,7 +49,12 @@ fun App() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    ResultsDisplay(resultsManager)
+                    ResultsDisplay(
+                        results = resultsManager.results,
+                        sortResults = resultsManager::sortResults,
+                        pointsText = resultsManager.pointsText,
+                        playerText = resultsManager.playerText
+                    )
                 }
             }
         }
