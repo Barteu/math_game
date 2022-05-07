@@ -11,6 +11,8 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 
 @Composable
 @Preview
@@ -21,7 +23,6 @@ fun App() {
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ){
-
             val resultsManager = remember {
                 val tmp = ResultsManager()
                 tmp.getAllResults()
@@ -41,7 +42,9 @@ fun App() {
                         onResetClick = game::reset,
                         question = game.question,
                         onSubmitClick = game::submit,
-                        isActive = game.isActive
+                        isActive = game.isActive,
+                        lives = game.lives,
+                        points = game.points
                     )
                 }
                 Column(
@@ -63,14 +66,6 @@ fun App() {
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
-
-        val results = mutableListOf(Result("Jan",12,54),
-                                     Result("Kowal", 6, 23))
-
-
-
-
-
         App()
     }
 }

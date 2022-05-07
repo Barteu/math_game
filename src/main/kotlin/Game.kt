@@ -10,18 +10,29 @@ import java.util.*
 
 
 class Game(val resultsManager: ResultsManager) {
-    var formattedTime by mutableStateOf("00:00")
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     var isActive = false
     private var timeMillis = 0L
     private var lastTimestamp = 0L
-    private var points = 0
 
-    var question by mutableStateOf("2+2")
-    var answer by mutableStateOf("2+2")
+    var formattedTime by mutableStateOf("00:00")
+    var points by mutableStateOf(0)
+    var question by mutableStateOf("❔❔❔")
+    var answer by mutableStateOf("")
+    var lives by mutableStateOf(3)
+
+    private var answerChecker: (String) -> Boolean = {_: String -> false }
+
+    fun loadNewQuestion(){
+        val questionPair = QuestionMaker.prepareQuestion(points)
+        question = questionPair.first
+        answerChecker = questionPair.second
+    }
 
     fun start(){
         if(isActive) return
+
+        loadNewQuestion()
 
         coroutineScope.launch {
             lastTimestamp = System.currentTimeMillis()
@@ -46,25 +57,28 @@ class Game(val resultsManager: ResultsManager) {
         formattedTime = "00:00"
         isActive = false
         points = 0
+        lives = 3
+        answer = ""
+        question = "❔❔❔"
     }
 
 
-
-    // TODO: complete submit fun
     fun submit(submittedAnswer: String){
         answer = submittedAnswer
 
-        if (true){
+        if (answerChecker(answer)){
             points += 1
-            question = "3+3"
+            loadNewQuestion()
         }
         else{
-            resultsManager.addResult(Result(playerName = "", points = points, time = timeMillis))
-            reset()
+            lives -= 1
+            if(lives == 0){
+                resultsManager.addResult(Result(playerName = "Xd", points = points, time = timeMillis))
+                reset()
+            }
         }
-
-
     }
+
 
 }
 fun formatTime(timeMillis: Long): String{

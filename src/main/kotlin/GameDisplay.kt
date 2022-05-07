@@ -25,6 +25,29 @@ import org.jetbrains.skia.FontWeight
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
+
+@Composable
+fun RowScope.TopText(text: String){
+    Text(
+        text = text,
+        fontSize = 30.sp,
+        color = Color.Black
+    )
+}
+
+@Composable
+fun RowScope.QuestionText(text: String,modifier: Modifier = Modifier){
+    Text(
+        text = text,
+        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+        fontSize = 40.sp,
+        color = Color.Black,
+        modifier = modifier,
+        textAlign = TextAlign.Center
+    )
+}
+
+
 @Composable
 fun GameDisplay(
     formattedTime: String,
@@ -32,9 +55,10 @@ fun GameDisplay(
     onResetClick: () -> Unit,
     question: String,
     onSubmitClick: (String) -> Unit,
-    isActive: Boolean
+    isActive: Boolean,
+    lives: Int,
+    points: Int
 ){
-
     val focusManager = LocalFocusManager.current
             var answer by remember { mutableStateOf("") }
             var isError by remember { mutableStateOf(false) }
@@ -47,29 +71,24 @@ fun GameDisplay(
                 }
             }
             Row(
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "Time $formattedTime",
-                    fontSize = 30.sp,
-                    color = Color.Black
-                )
+                TopText("Time $formattedTime")
+                TopText("Points $points")
+                TopText("♥ $lives")
             }
 
             Spacer(Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
-
                 ) {
-                Text(
-                    text = "$question = ",
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                    fontSize = 40.sp,
-                    color = Color.Black
-                )
+
+                QuestionText(question, Modifier.width(150.dp))
+                QuestionText(" = ")
+
                 OutlinedTextField(
                     textStyle = TextStyle(color = Color.Blue, fontSize = 40.sp, textAlign = TextAlign.Center),
                     singleLine = true,
@@ -91,7 +110,9 @@ fun GameDisplay(
                     enabled = isActive
                 )
                 Spacer(Modifier.width(16.dp))
-                Button(onClick = {onSubmitClick(answer)},
+                Button(onClick = { onSubmitClick(answer)
+                                   answer=""
+                                 },
                 enabled = !isError && answer.isNotEmpty()) {
                     Text("Submit")
                 }
