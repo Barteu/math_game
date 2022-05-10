@@ -86,7 +86,7 @@ fun GameDisplay(
                 verticalAlignment = Alignment.CenterVertically,
                 ) {
 
-                QuestionText(question, Modifier.width(150.dp))
+                QuestionText(question, Modifier.width(180.dp))
                 QuestionText(" = ")
 
                 OutlinedTextField(
