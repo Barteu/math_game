@@ -41,7 +41,9 @@ fun ResultsDisplay(
     LazyColumn(Modifier.fillMaxSize().padding(16.dp)
         ) {
         item {
-            Row(modifier = Modifier.fillMaxWidth()){
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ){
                 OutlinedTextField(
                     textStyle = TextStyle(color = Color.Blue, fontSize = 40.sp, textAlign = TextAlign.Center),
                     singleLine = true,
@@ -54,6 +56,7 @@ fun ResultsDisplay(
                     label = { Text("Filter Player Name") }
                 )
             }
+            Spacer(Modifier.height(16.dp))
         }
         item {
             Row(

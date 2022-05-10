@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.Result
 
 
 class Game() {
@@ -20,6 +21,7 @@ class Game() {
     var question by mutableStateOf("❔❔❔")
     var answer by mutableStateOf("")
     var lives by mutableStateOf(3)
+    var askForName by mutableStateOf(false)
 
     private var answerChecker: (String) -> Boolean = {_: String -> false }
 
@@ -60,6 +62,7 @@ class Game() {
         lives = 3
         answer = ""
         question = "❔❔❔"
+        askForName = false
     }
 
 
@@ -72,13 +75,15 @@ class Game() {
         }
         else{
             lives -= 1
-            if(lives == 0){
-                addResult(Result(playerName = "Xd", points = points, time = timeMillis))
-                reset()
-            }
+            askForName = lives == 0
         }
     }
 
+    fun confirmName(name: String){
+        addResult(Result(playerName = name, points = points, time = timeMillis))
+        saveAllResults(ResultsManager.resultsAll)
+        reset()
+    }
 
 }
 fun formatTime(timeMillis: Long): String{
