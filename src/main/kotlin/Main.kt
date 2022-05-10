@@ -24,11 +24,10 @@ fun App() {
             modifier = Modifier.fillMaxSize()
         ){
             val resultsManager = remember {
-                val tmp = ResultsManager()
-                tmp.getAllResults()
-                tmp
+                getAllResults()
+                ResultsManager
             }
-            val game = remember { Game(resultsManager) }
+            val game = remember { Game() }
             Row()
             {
                 Column(
@@ -54,9 +53,10 @@ fun App() {
                 ) {
                     ResultsDisplay(
                         results = resultsManager.results,
-                        sortResults = resultsManager::sortResults,
+                        sortResults = ::sortResults,
                         pointsText = resultsManager.pointsText,
-                        playerText = resultsManager.playerText
+                        playerText = resultsManager.playerText,
+                        filterResults = ::filterResults
                     )
                 }
             }

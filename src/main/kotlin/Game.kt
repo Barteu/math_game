@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class Game(val resultsManager: ResultsManager) {
+class Game() {
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     var isActive = false
     private var timeMillis = 0L
@@ -73,7 +73,7 @@ class Game(val resultsManager: ResultsManager) {
         else{
             lives -= 1
             if(lives == 0){
-                resultsManager.addResult(Result(playerName = "Xd", points = points, time = timeMillis))
+                addResult(Result(playerName = "Xd", points = points, time = timeMillis))
                 reset()
             }
         }

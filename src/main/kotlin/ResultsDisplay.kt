@@ -34,10 +34,27 @@ fun ResultsDisplay(
     results: SnapshotStateList<Result>,
     sortResults: (Int, Boolean) -> Unit,
     playerText: MutableState<String>,
-    pointsText: MutableState<String>
+    pointsText: MutableState<String>,
+    filterResults: (String) -> Unit
 ){
+    var filterRemember by remember { mutableStateOf("") }
     LazyColumn(Modifier.fillMaxSize().padding(16.dp)
         ) {
+        item {
+            Row(modifier = Modifier.fillMaxWidth()){
+                OutlinedTextField(
+                    textStyle = TextStyle(color = Color.Blue, fontSize = 40.sp, textAlign = TextAlign.Center),
+                    singleLine = true,
+                    value = filterRemember,
+                    onValueChange = {
+                        filterRemember = it
+                        filterResults(it)
+                    },
+                    modifier = Modifier.width(180.dp),
+                    label = { Text("Filter Player Name") }
+                )
+            }
+        }
         item {
             Row(
                 modifier = Modifier.fillMaxWidth().background(Color.LightGray)
