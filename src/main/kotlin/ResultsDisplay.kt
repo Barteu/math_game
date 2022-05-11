@@ -105,7 +105,7 @@ fun ResultsDisplay(
                 )
             }
         }
-        items(results) { result ->
+        items(results.slice(0..( if (results.size <= 9)  results.size-1 else 9))) { result ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {

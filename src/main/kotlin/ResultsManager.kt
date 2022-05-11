@@ -17,7 +17,7 @@ object ResultsManager {
     val path = "src/json/results.json"
     var resultsAll: SnapshotStateList<Result> = mutableStateListOf<Result>()
     var sortingColumn = 0
-    var sortingOrder = false
+    var sortingOrder = false //false sort ascending
     var results:SnapshotStateList<Result> = mutableStateListOf<Result>()
     var playerText = mutableStateOf("Player")
     var pointsText = mutableStateOf("Points")
@@ -103,11 +103,7 @@ fun filterResults(filterIn: String){
             .filter {
                 it.playerName
                     .matches(Regex("$filter.*"))
-            }
-            .let {
-                it.slice(0..( if (it.size <= 9)  it.size-1 else 9))
-                    .toMutableStateList()
-            }
+            }.toMutableStateList()
     )
     sortResults(sortingColumn)
 }
