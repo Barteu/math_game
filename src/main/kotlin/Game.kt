@@ -14,16 +14,14 @@ class Game() {
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     var isActive = false
     private var timeMillis = 0L
-    private var lastTimestamp = 0L
-
     var formattedTime by mutableStateOf("00:00")
     var points by mutableStateOf(0)
     var question by mutableStateOf("❔❔❔")
     var answer by mutableStateOf("")
     var lives by mutableStateOf(3)
     var askForName by mutableStateOf(false)
-
     private var answerChecker: (String) -> Boolean = {_: String -> false }
+
 
     fun loadNewQuestion(){
         val questionPair = QuestionMaker.prepareQuestion(points)
@@ -37,15 +35,12 @@ class Game() {
         loadNewQuestion()
 
         coroutineScope.launch {
-            lastTimestamp = System.currentTimeMillis()
             this@Game.isActive = true
+            val timer = closureTimer()
             while(this@Game.isActive){
                 delay(1000L)
-                val currentTime = System.currentTimeMillis()
-                timeMillis +=  currentTime - lastTimestamp
-                lastTimestamp = currentTime
+                timeMillis = timer()
                 formattedTime = formatTime(timeMillis)
-
             }
         }
     }
@@ -54,8 +49,6 @@ class Game() {
     fun reset(){
         coroutineScope.cancel()
         coroutineScope = CoroutineScope(Dispatchers.Main)
-        timeMillis = 0L
-        lastTimestamp = 0L
         formattedTime = "00:00"
         isActive = false
         points = 0
@@ -97,4 +90,17 @@ fun formatTime(timeMillis: Long): String{
         Locale.getDefault()
     )
     return localDateTime.format(formatter)
+}
+
+
+//closure
+fun closureTimer(): () -> Long{
+    var time = 0L
+    var timeStamp = System.currentTimeMillis()
+    return {
+        val currentTime = System.currentTimeMillis()
+        time += currentTime - timeStamp
+        timeStamp = currentTime
+        time
+    }
 }
